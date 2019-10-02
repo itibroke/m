@@ -1,0 +1,22 @@
+using System;
+
+
+namespace INTERES
+{
+    class Program
+    {
+        public static double Calculate(string UserInput)
+        {
+            var b = UserInput.Split(' ');
+            var sum = double.Parse((b[0]) , System.Globalization.CultureInfo.InvariantCulture);
+            var percent = double.Parse(b[1]);
+            var month = double.Parse(b[2]);
+            return sum * (Math.Pow((1 + percent / 12.0 / 100), month));
+        }
+        static void Main(string[] args)
+        {
+            string output = Convert.ToString(Calculate(Console.ReadLine()));
+            Console.WriteLine(output);
+        }
+    }
+}
