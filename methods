@@ -1,0 +1,49 @@
+using System.Collections.Generic;
+using System;
+
+namespace TextAnalysis
+{
+    static class SentencesParserTask
+    {
+        public static List<List<string>> ParseSentences(string text)
+        {
+            string tempstr = "";
+            var sentencesList = new List<List<string>>();
+            char[] symbols = new char[] { '.', '!', '?', ';', ':', '(', ')' };
+            string[] sentences = text.Split(symbols, StringSplitOptions.RemoveEmptyEntries);
+            FillingMainList(sentences, tempstr, sentencesList);
+            return sentencesList;
+        }
+        public static List<List<string>> FillingMainList(string [] sentences, string tempstr, List<List<string>> sentencesList)
+        {
+            foreach (var sentence in sentences)
+            {
+                var wordList = new List<string>();
+                for (int i = 0; i < sentence.Length; i++)
+                {
+                    if ((char.IsLetter(sentence[i]) || (sentence[i] == '\'')) && (i != sentence.Length - 1))
+                    {
+                        tempstr += sentence[i];
+                    }
+                    else if ((char.IsLetter(sentence[i])) && (i == sentence.Length - 1) || (sentence[i] == '\''))
+                    {
+                        tempstr += sentence[i];
+                        wordList.Add(tempstr.ToLower());
+                        tempstr = "";
+                    }
+                    else
+                    {
+                        if (tempstr != "")
+                        {
+                            wordList.Add(tempstr.ToLower());
+                            tempstr = "";
+                        }
+                    }
+                }
+                if (wordList.Count != 0)
+                    sentencesList.Add(wordList);
+            }
+            return sentencesList;
+        }
+    }
+}
