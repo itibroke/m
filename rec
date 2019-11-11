@@ -1,0 +1,44 @@
+using System.Collections.Generic;
+using System;
+namespace Recognizer
+{
+	public static class ThresholdFilterTask
+	{
+		public static double[,] ThresholdFilter(double[,] original, double whitePixelsFraction)
+		{
+            var rows = original.GetLength(0);
+            var columns = original.GetLength(1);
+            List<double> Counters = new List<double>();
+            var t = 0;
+            for (var x = 0; x < rows; x++)
+            {
+                for (var y = 0; y < columns; y++)
+                {
+                    Counters.Add(original[x, y]);
+                }
+            }
+            Counters.Sort();
+            if (whitePixelsFraction > 0)
+            {
+                var vbPixels = Convert.ToInt32(rows * columns * whitePixelsFraction);
+                t = Convert.ToInt32(Counters[vbPixels]);
+            }
+            
+            for (var x = 0; x < rows; x++)
+            {
+                for (var y = 0; y < columns; y++)
+                {
+					if (original[x, y] >= t)
+                    {
+                        original[x, y] = 1;
+                    }
+                   	else
+                    {
+                        original[x, y] = 0;
+                    }
+                }
+            }
+            return original;
+		}
+	}
+}
